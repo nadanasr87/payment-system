@@ -1,13 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Api\PaymentController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('payments', [PaymentController::class, 'index']);
-Route::post('payments/create', [PaymentController::class, 'create']);
-Route::post('payments/process', [PaymentController::class, 'process']);
-Route::get('payments/{id}', [PaymentController::class, 'show']);
-
+Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');

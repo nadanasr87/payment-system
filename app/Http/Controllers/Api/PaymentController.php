@@ -21,17 +21,20 @@ class PaymentController extends Controller
             'payment_method' => 'required|string',
             'amount' => 'required|numeric|min:0.01',
             'currency' => 'nullable|string|max:3',
+            'product_id' => 'nullable|integer|exists:products,id',
         ]);
 
         $payment = $this->service->process(
             $request->payment_method,
             $request->amount,
-            $request->currency ?? 'USD'
+            $request->currency ?? 'USD',
+            $request->product_id
         );
 
-        return response()->json([
+        return back()->with([
             'message' => 'Payment processed successfully.',
             'payment' => $payment,
         ]);
     }
+
 }

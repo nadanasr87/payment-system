@@ -20,19 +20,26 @@ class PaymentService
 }
 
 
-    public function process(string $method, float $amount, string $currency = 'USD'): Payment
+   public function process(string $method, float $amount, string $currency = 'USD', ?int $productId = null): Payment
     {
         $gateway = $this->gatewayFactory->create($method);
 
         $result = $gateway->pay($amount, $currency);
 
-        return $this->paymentRepository->create([
+        $paymentData = [
             'payment_method' => $method,
             'amount' => $amount,
             'currency' => $currency,
             'status' => $result['status'] ?? 'pending',
             'transaction_id' => $result['transaction_id'] ?? null,
             'payment_details' => $result['raw'] ?? [],
-        ]);
+        ];
+
+        if ($productId) {
+            $paymentData['product_id'] = $productId;
+        }
+
+        return $this->paymentRepository->create($paymentData);
     }
+
 }

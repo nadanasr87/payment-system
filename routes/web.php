@@ -7,3 +7,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
+Route::view('/payment', 'payment');
+

@@ -1,8 +1,9 @@
 <?php
 namespace App\Factories;
 
-use App\Services\PaymentGateways\PaymentGatewayInterface;
 use Illuminate\Contracts\Container\Container;
+use App\Services\PaymentGateways\PaypalGateway;
+use App\Services\PaymentGateways\PaymentGatewayInterface;
 
 class PaymentGatewayFactory
 {
@@ -17,6 +18,7 @@ class PaymentGatewayFactory
     {
         return match ($gateway) {
             'stripe' => $this->container->make(\App\Services\PaymentGateways\StripeGateway::class),
+            'paypal' => $this->container->make(PaypalGateway::class),
             // add other gateways...
             default => throw new \Exception("Unsupported payment gateway [$gateway]"),
         };
